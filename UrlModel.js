@@ -6,5 +6,5 @@ const UrlSchema = new mongoose.Schema({
   short_url: String
 });
 
-// Create document called URLs
+// Create new model 
 module.exports = mongoose.model('Links', UrlSchema);
