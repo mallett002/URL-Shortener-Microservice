@@ -5,5 +5,5 @@ module.exports = (app) => {
   app.post('api/shorturl/new', urls.create);
   
   // Retrieve a single url
-  app.get('/:shortUrl', urls.retrieve);
+  app.get('/api/shorturl/:shorturl', urls.goTo);
 };
