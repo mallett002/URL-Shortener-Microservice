@@ -1,5 +1,4 @@
 const express = require('express');
-const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -16,8 +15,15 @@ app.use('/public', express.static(process.cwd() + '/public'));
 // call url.routes, passing it the app
 require('./url.routes.js')(app);
 
-// connect to database
-mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
+// Connect to db
+mongoose.connect(process.env.DB_URI, { 
+  useNewUrlParser: true 
+}).then(() => {
+  console.log("Successfully connected to the database");
+}).catch(err => {
+  console.log('Could not connect to the database. Exiting now...', err);
+  process.exit();
+});
 
 // Serve html file
 app.get('/', (req, res) => {

@@ -5,7 +5,6 @@ dependencies:
   express: 5.0.0-alpha.7
   mongodb: 3.1.12
   mongoose: 5.4.5
-  valid-url: 1.0.9
 packages:
   /accepts/1.0.7:
     dependencies:
@@ -1335,10 +1334,6 @@ packages:
       node: '>= 0.4.0'
     resolution:
       integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-  /valid-url/1.0.9:
-    dev: false
-    resolution:
-      integrity: sha1-HBRHm0DxOXp1eC8RXkCGRHQzogA=
   /vary/0.1.0:
     dev: false
     engines:
@@ -1429,4 +1424,3 @@ specifiers:
   express: ^5.0.0-alpha.2
   mongodb: ^3.1.11
   mongoose: ^5.4.5
-  valid-url: ^1.0.9
