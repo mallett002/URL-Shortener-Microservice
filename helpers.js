@@ -41,8 +41,18 @@ function saveUrlDocToDatabase(urlDoc) {
   return new Promise((resolve, reject) => {
     urlDoc.save((err, data) => {
       if (err) reject(err);
-      else resolve(data);
+      else resolve(null, data);
     }); 
+  });
+}
+
+// Returns promise of original url from found short url 
+function redirectToOriginalUrl(shortUrl) {
+  return new Promise((resolve, reject) => {
+    urlModel.findOne({ short_url: shortUrl }, (err, doc) => {
+      if (err || doc === null) return reject (err);
+      else return resolve(doc.original_url);
+    });
   });
 }
 
@@ -50,5 +60,6 @@ module.exports = {
   isValidUrl, 
   checkIfExistsInDb,
   getNewShortUrl,
-  saveUrlDocToDatabase
+  saveUrlDocToDatabase,
+  redirectToOriginalUrl
 };
