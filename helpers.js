@@ -5,12 +5,16 @@ const urlModel = require('./urlModel');
 function isValidUrl(url) {
   const urlWithOutProtocol = url.replace(/^(http(s)?:\/\/)/, "");
   
-  dns.lookup(urlWithOutProtocol, (err, address) => {
-    return err ? false : true;
+  return new Promise((resolve, reject) => {
+    dns.lookup(urlWithOutProtocol, (err, address) => {
+      if (err) reject(err);
+      else resolve(address);
+    });
   });
+  
 }
 
-function checkIfExists(originalUrl) {
+function checkIfExistsInDb(originalUrl) {
   return new Promise((resolve, reject) => {
       urlModel.findOne({ original_url: originalUrl }, (err, data) => {
         if (data === null || err) resolve({ status: false });
@@ -37,14 +41,14 @@ function saveUrlDocToDatabase(urlDoc) {
   return new Promise((resolve, reject) => {
     urlDoc.save((err, data) => {
       if (err) reject(err);
-      else resolve(null, data);
+      else resolve(data);
     }); 
   });
 }
 
 module.exports = {
   isValidUrl, 
-  checkIfExists,
+  checkIfExistsInDb,
   getNewShortUrl,
   saveUrlDocToDatabase
 };

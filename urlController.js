@@ -1,7 +1,7 @@
 const dns = require('dns');
 const {
   isValidUrl,
-  checkIfExists,
+  checkIfExistsInDb,
   getNewShortUrl,
   saveUrlDocToDatabase
 } = require('./helpers');
@@ -11,17 +11,17 @@ const urlModel = require('./urlModel');
 exports.create = (req, res) => { 
   const originalUrl = req.body.url;
   
-  // check if is valid url
-  const urlIsValid = isValidUrl(originalUrl); // returns true or false
-  
-  if (urlIsValid) {
-    // check if already in db
-    const isInDatabase = checkIfExists(originalUrl);
+  try {
     
-    // if so, send json data for already existing url
-    isInDatabase
-    .then((dbResponse) => {
+     isValidUrl(originalUrl)
+      
+      .then((address) => {  // if valid, check if already in db  
+        return checkIfExistsInDb(originalUrl); // returns {status:bool, short_url:if status}
+      })
+    
+    .then((dbResponse) => {  // if so, send json data for already existing url
       if (dbResponse.status) {
+        
         res.json({ original_url: originalUrl, short_url: dbResponse.short_url });
         res.end();
 
@@ -39,18 +39,18 @@ exports.create = (req, res) => {
         return saveUrlDocToDatabase(urlDoc); // returns promise, will be passed to next "then" handler
       } 
     })
-
-    // send new json response
+    
     .then((data) => {
       res.json(data);
     });
     
-  } else { // not valid url
+  } catch(err) {
     
-    res.json({ "error":"invalid URL" });
+    res.json({ error: err, message:  "invalid URL" });
   }
 };
 
+// handl GET to "/shorturl/:shorturl
 exports.goToShortUrl = (req, res) => {
-  const shortUrl = req.params.shortUrl;
+  const shortUrl = req.params.shorturl;
 };
