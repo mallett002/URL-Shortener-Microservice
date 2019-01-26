@@ -1,7 +1,6 @@
 const dns = require('dns');
 const urlModel = require('./urlModel');
 
-
 function isValidUrl(url) {
   const urlWithOutProtocol = url.replace(/^(http(s)?:\/\/)/, "");
   
@@ -46,7 +45,6 @@ function saveUrlDocToDatabase(urlDoc) {
   });
 }
 
-// Returns promise of original url from found short url 
 function redirectToOriginalUrl(shortUrl) {
   return new Promise((resolve, reject) => {
     urlModel.findOne({ short_url: shortUrl }, (err, doc) => {

@@ -1,4 +1,5 @@
 const dns = require('dns');
+const urlModel = require('./urlModel');
 const {
   isValidUrl,
   checkIfExistsInDb,
@@ -6,7 +7,11 @@ const {
   saveUrlDocToDatabase,
   redirectToOriginalUrl
 } = require('./helpers');
-const urlModel = require('./urlModel');
+
+// Handle GET request to "api/hello"
+exports.greeting = (req, res) => {
+  return res.json({message: "Hello to the URL Shortener Microservice"});
+};
 
 // Handle POST to "api/shorturl/new"
 exports.create = (req, res) => { 
@@ -41,9 +46,9 @@ exports.create = (req, res) => {
 
   .then((original_url) => {
      return res.json({ original_url: originalUrl, short_url: newShortUrl });
-   });
+   })
   
-  dnsLookup.catch((reason) => {
+  .catch((reason) => {
     return res.json({ error: "invalid URL" });
   });
 };
